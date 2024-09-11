@@ -13,6 +13,10 @@ sudoku_=[[5,0,0,0,0,0,0,0,0],
          [0,0,0,0,0,0,1,2,0]]
 
 
+
+
+
+
 def verificar(lin,col,sudoku):
 
     if sudoku[lin][col]==0:
@@ -49,3 +53,43 @@ def backtracking(sudoku,tempol,tempolimite):
                   sudoku[linhas][colunas]=0
               return False
   return True
+
+def contar_zeros(matriz):
+    contador= 0
+    for i in matriz:
+        contador += i.count(0)
+    return contador
+
+
+
+def criar():
+    tentativas=0
+    while tentativas<=2000000:
+        tentativas+=1
+        novo_sudoku= [[0 if random.random()<0.6 else random.randint(1,9) for _ in range(9)] for _ in range(9)]
+        for i in range(9):
+          for j in range(9):
+            if verificar(i,j,novo_sudoku) == False:
+              novo_sudoku= [[0 for _ in range(9)] for _ in range(9)]
+
+
+        if contar_zeros(novo_sudoku) >= 40 and contar_zeros(novo_sudoku) <= 60:
+            teste= copy.deepcopy(novo_sudoku)
+            if backtracking(novo_sudoku,time.time(),0):
+                print("Solução encontrada após "+str(tentativas)+" tentativas")
+                for i in teste:
+                  print(i)
+                print('\n')
+                return  novo_sudoku
+            else:
+                print("Tentativa Falhou")
+    print("Não foi possível criar um sudoku")
+    return None
+
+
+
+criar()
+
+
+
+
